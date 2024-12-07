@@ -1,49 +1,76 @@
-// Made by Rafael Pompa
-// Made on 11/5
-// This program writes 10 random numbers between 50 and 100 to a text file,
-// reads them back, and displays the total.
-
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
+#include <cmath>
 using namespace std;
 
-void intro() {
-    cout << "This program will read from the file and add up all of the numbers." << endl;
-    cout << "Then the program will print all the numbers and display the total." << endl;
-    cout << " " << endl;
+class Triangle{
+private:
+int aside;
+int bside;
+int cside;
+int b2side;
+Triangle (int a, int b, int c, int b2);
+Triangle();
+
+public:
+void setaside(int);
+void setbside(int);
+void setcside(int);
+void setb2side(int);
+int getparameter();
+int getarea();
+int getscale();
+};
+
+Triangle::Triangle (int a, int b, int c, int b2){
+  aside = a;
+  bside = b;
+  cside = c;
+  b2side =b2;
+}
+Triangle::Triangle(){
+ aside = 0;
+ bside = 0;
+ cside = 0;
+ b2side = 0;
+}
+void Triangle::setaside(int a){
+ aside = a;
+}
+void Triangle::setbside(int b){
+ bside = b;
+}
+ void Triangle::setcside(int c){
+ cside = c;
+}
+void Triangle::setb2side(int b2){
+ b2side = b2; 
+}
+int Triangle::getarea(){
+ return 0.5*aside*bside;
+}
+int Triangle::getparameter(){
+ return aside+bside+cside;
+}
+int Triangle::getscale(){
+ return bside/b2side;
 }
 
-int main() { 
-    int max = 50;
-    int RandomNumber = 0;
-    int valueArray[10];
-    int total = 0;
+int main() {
+int aside =1;
+int bside =1;
+int cside =2;
+int b2side;
 
-    intro();
+cout<<"enter a number for side a of the triangle :"<<endl;
+cin>>aside;
 
-    // Open file for writing
-    ofstream outfile("histo.txt");
-    srand(time(0));
+cout<<"enter a number for side b of the triangle :"<<endl;
+cin>>bside;
 
-    // Write 10 random numbers to file
-    for (int i = 0; i < 10; i++) {
-        valueArray[i] = rand() % max + 50;
-        outfile << valueArray[i] << " "; // Add space between numbers for readability
-    }
-    outfile.close();
+cout<<"enter a number for side c of the triangle :"<<endl;
+cin>>cside;
 
-    // Open file for reading and calculate total
-    ifstream infile("histo.txt");
-    cout << "Numbers in the file:" << endl;
-    while (infile >> RandomNumber) {
-        cout << RandomNumber << " "; // Print each number
-        total += RandomNumber;
-    }
-    infile.close();
-
-    cout << endl << "Total of numbers: " << total << endl;
-
-    return 0;
+cout<<"enter a number for side B2 for the second triangle :"<<endl;
+cin>>b2side;
+return 0;
 }
