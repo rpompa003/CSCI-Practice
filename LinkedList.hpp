@@ -1,0 +1,203 @@
+#ifndef _LINKED_LIST_HPP_
+#define _LINKED_LIST_HPP_
+
+#include <stdexcept>
+
+template <typename T>
+class LinkedList
+{
+private:
+
+// Define Node data type and immediately instantiate head pointer of that type
+struct Node
+{
+
+Node* next;
+T data;
+
+Node(T d, Node* n) : data(d), next(n){}
+}* head_;
+
+public:
+
+// Constructor
+// Initializes head to null
+LinkedList() : head_(nullptr){}
+
+// Return true if the list is empty, otherwise false
+bool empty()
+{
+return head_ == nullptr;
+}
+
+// Return the number of nodes in the list
+size_t size()
+{
+size_t counter(0);
+Node* iter = head_;
+while (iter != nullptr)
+{
+iter = iter->next;
+++counter;
+}
+
+return counter;
+}
+
+// Create a new node to contain value and insert
+// the node to the front of the list
+void pushFront(T value)
+{
+head_ = new Node(value, head_);
+}
+
+// Create a new node to contain value and insert
+// the node to the front of the list
+void pushBack (T value)
+{
+if (empty())
+{
+pushFront(value);
+}
+else
+{
+Node* iter = head_;
+while (iter->next != nullptr)
+{
+iter = iter->next;
+}
+
+iter->next = new Node(value, nullptr);
+}
+}
+
+// Retrieve the node value at the specified list index.
+T at(size_t index)
+{
+if (index >= size())
+{
+throw std::out_of_range("Index is out of range");
+}
+
+Node* iter = head_;
+for (size_t i = 0; i < index; ++i)
+{
+iter = iter->next;
+}
+
+return iter->data;
+}
+
+// Remove the head node in the list such that
+// the second node in the list should become
+// the new head node. Then return the previous
+// head node's value.
+T popFront()
+{
+if (empty())
+{
+throw std:: logic_error("List is empty");
+}
+
+T returnData = head_->data;
+
+Node* temp = head_->next;
+delete head_;
+head_ = temp;
+
+return returnData;
+}
+
+// Remove the node at the specified list index.
+// Return true if the node at the specified index
+// could be removed, otherwise false
+bool removeAt(size_t index)
+{
+if (index < 0 || index >= size())
+{
+return false;
+}
+
+if (index == 0)
+{
+popFront();
+}
+else
+{
+Node* iter = head_;
+for (size_t i(0); i < index-1; ++i)
+{
+iter = iter->next;
+}
+
+Node* nodeToRemove = iter->next;
+iter->next = nodeToRemove->next;
+delete nodeToRemove;
+}
+
+return true;
+}
+
+
+// Remove all nodes in the list
+void clear()
+{
+while (!empty())
+{
+popFront();
+}
+}
+
+// Destructor
+// Remove any remaining nodes in the list
+~LinkedList()
+{
+clear();
+}
+
+// Definition of iterator data type
+// for iterating through a Linked List
+class Iterator
+{
+private:
+Node* current_;
+
+public:
+
+Iterator (Node* head): current_(head){}
+
+// Get address of current node's data
+T* current()
+{
+if (current_ == nullptr)
+{
+return nullptr;
+}
+
+return &current_->data;
+}
+
+// Move to the next node
+void next()
+{
+if (current_ != nullptr)
+{
+current_ = current_->next;
+}
+}
+
+// Return true if there is a next node, otherwise false
+bool hasNext()
+{
+return current_ != nullptr;
+}
+};
+
+// return a new Iterator object
+Iterator generateIterator()
+{
+return Iterator(head_);
+}
+};
+
+#endif
