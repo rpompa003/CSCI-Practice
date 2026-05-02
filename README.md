@@ -1,2 +1,0 @@
-# CSCI-Practice
-CSCI Practice
